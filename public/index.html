@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Umzimvubu Local Municipality — Careers</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">
+    <div class="logo">
+      <img src="./images/logo.png" alt="ULM Logo">
+    </div>
+    <div>
+      <h1>Umzimvubu Local Municipality</h1>
+      <p class="tagline">"Smart Way to Work Smarter"</p>
+    </div>
+  </div>
+  <nav>
+    <a href="/">Jobs</a>
+    <a href="/signup.html" class="btn-primary">Join Our Talent Community</a>
+    <a href="/profile.html">My Profile</a>
+    <a href="/admin.html">Admin</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h2>Find Your Next Opportunity</h2>
+    <p>Serving the community of Umzimvubu, Eastern Cape</p>
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="Job title, skill, keyword" />
+      <select id="categoryFilter">
+        <option value="">All Categories</option>
+      </select>
+      <button onclick="filterJobs()">Search</button>
+    </div>
+  </section>
+
+  <section class="jobs-section">
+    <h3>Open Positions <span id="jobCount" class="badge"></span></h3>
+    <div id="jobsList" class="jobs-grid"></div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Umzimvubu Local Municipality · <a href="/signup.html">Join our Talent Community</a></p>
+</footer>
+
+<!-- Apply pop-up -->
+<div id="applyModal" class="apply-overlay" role="dialog" aria-modal="true" aria-labelledby="applyHeading">
+  <div class="apply-dialog">
+    <div id="applyForm">
+      <h3 id="applyHeading">Apply for this position</h3>
+      <p class="apply-job" id="applyJobTitle"></p>
+
+      <label for="applyEmail">Enter the email you used to join the ULM Talent Community</label>
+      <input id="applyEmail" type="email" inputmode="email" autocomplete="email"
+             placeholder="someone@example.com" />
+      <div id="applyMsg" class="apply-msg" aria-live="polite"></div>
+
+      <div class="apply-actions">
+        <button type="button" id="applyCancel">Cancel</button>
+        <button type="button" id="applySubmit" class="btn-primary">Submit application</button>
+      </div>
+    </div>
+
+    <div id="applyResult" class="apply-result">
+      <div class="tick">&#10003;</div>
+      <p id="applyResultText"></p>
+      <p id="applyDevNote" class="dev-note"></p>
+      <div class="apply-actions" style="justify-content:center">
+        <button type="button" id="applyClose" class="btn-primary">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

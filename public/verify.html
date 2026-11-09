@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Confirm Your Identity — Umzimvubu</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="brand"><div class="logo">
+    <img src="./images/logo.png" alt="ULM Logo">
+  </div><div><h1>Umzimvubu Local Municipality</h1></div></div>
+</header>
+
+<main class="signup-wrap">
+  <div class="form-card active" style="text-align:center">
+    <h2 style="background:#ffcc00;padding:12px;border-radius:6px;color:#1a4d8f">Confirm Your Identity</h2>
+    <p>The verification code was sent to <strong id="emailShow"></strong>.<br/>
+    Type the code below. Note that it may take some time before you receive the code.</p>
+
+    <div class="code-inputs" id="codeInputs">
+      <input maxlength="1" /><input maxlength="1" /><input maxlength="1" />
+      <input maxlength="1" /><input maxlength="1" /><input maxlength="1" />
+    </div>
+
+    <button class="btn-primary" onclick="verifyCode()">VERIFY</button>
+    <p><a href="#" onclick="resendCode();return false;">Send New Code</a></p>
+    <div id="msg" class="msg"></div>
+  </div>
+</main>
+
+<script src="/js/verify.js"></script>
+</body>
+</html>

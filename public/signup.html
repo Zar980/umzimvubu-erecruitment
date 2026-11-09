@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Join Our Talent Community — Umzimvubu</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">
+    <div class="logo">
+      <img src="./images/logo.png" alt="ULM Logo">
+    </div>
+    <div>
+      <h1>Umzimvubu Local Municipality</h1>
+      <p class="tagline">"Smart Way to Work Smarter"</p>
+    </div>
+  </div>
+  <nav>
+    <a href="/">Jobs</a>
+    <a href="/signup.html" class="btn-primary">Join Our Talent Community</a>
+  </nav>
+</header>
+
+<main class="signup-wrap">
+
+  <!-- ---------- Progress ---------- -->
+  <div class="progress">
+    <div class="step" data-step="1">1. Join</div>
+    <div class="step" data-step="2">2. Your Details</div>
+    <div class="step" data-step="3">3. Experience &amp; Documents</div>
+  </div>
+
+  <!-- =========================================================
+       STEP 1 — Join (email + terms)
+       ========================================================= -->
+  <div class="form-card" data-step="1" style="text-align:center">
+    <h2>Join Our Talent Community</h2>
+    <p class="sub">Be the first to learn about new job opportunities.</p>
+
+    <label for="email">Email Address *</label>
+    <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+
+    <label class="checkbox">
+      <input type="checkbox" id="terms" />
+      I agree with the terms and conditions
+    </label>
+
+    <div class="actions">
+      <button type="button" class="btn-secondary" onclick="history.back()">◀ Back</button>
+      <button type="button" id="subscribeBtn" class="btn-primary" onclick="startSignup()">SUBSCRIBE ▶</button>
+    </div>
+    <div id="msg" class="msg"></div>
+  </div>
+
+  <!-- =========================================================
+       STEP 2 — Personal details
+       ========================================================= -->
+  <div class="form-card" data-step="2">
+    <h2>Your Details</h2>
+    <p class="sub">Tell us who you are and where you'd like to work.</p>
+
+    <label>Title</label>
+    <div id="titleGroup" class="title-group">
+      <button type="button" data-title="Mr">Mr</button>
+      <button type="button" data-title="Mrs">Mrs</button>
+      <button type="button" data-title="Ms">Ms</button>
+      <button type="button" data-title="Miss">Miss</button>
+      <button type="button" data-title="Dr">Dr</button>
+    </div>
+
+    <label for="firstName">First Name *</label>
+    <input id="firstName" autocomplete="given-name" />
+
+    <label for="middleName">Middle Name</label>
+    <input id="middleName" autocomplete="additional-name" />
+
+    <label for="lastName">Last Name *</label>
+    <input id="lastName" autocomplete="family-name" />
+
+    <label for="emailDisplay">Email Address</label>
+    <input id="emailDisplay" type="email" readonly />
+
+    <label for="phoneCountryCode">Country Code *</label>
+    <input id="phoneCountryCode" value="+27" autocomplete="tel-country-code" />
+
+    <label for="phoneNumber">Phone Number *</label>
+    <input id="phoneNumber" type="tel" autocomplete="tel-national" />
+
+    <h3>Preferences</h3>
+
+    <label for="catSelect">Preferred Job Categories</label>
+    <div class="row">
+      <select id="catSelect">
+        <option value="">Select a category…</option>
+        <option>Administration</option>
+        <option>Finance</option>
+        <option>Engineering</option>
+        <option>Public Works</option>
+        <option>Health &amp; Environmental</option>
+        <option>Community Services</option>
+        <option>ICT</option>
+        <option>Human Resources</option>
+        <option>Legal</option>
+      </select>
+      <button type="button" class="btn-secondary" onclick="addChip('catSelect','catChips')">Add</button>
+    </div>
+    <div id="catChips" class="chips"></div>
+    
+    <h3>Address</h3>
+
+    <label for="country">Country</label>
+    <input id="country" value="South Africa" autocomplete="country-name" />
+
+    <label for="streetNumber">Street Number</label>
+    <input id="streetNumber" autocomplete="address-line1" />
+
+    <label for="complexName">Complex / Building Name</label>
+    <input id="complexName" />
+
+    <label for="unitNumber">Unit Number</label>
+    <input id="unitNumber" />
+
+    <label for="streetName">Street Name</label>
+    <input id="streetName" autocomplete="address-line1" />
+
+    <label for="suburb">Suburb</label>
+    <input id="suburb" autocomplete="address-line2" />
+
+    <label for="city">City / Town</label>
+    <input id="city" autocomplete="address-level2" />
+
+    <label for="postalCode">Postal Code</label>
+    <input id="postalCode" autocomplete="postal-code" />
+
+    <label class="checkbox">
+      <input type="checkbox" id="jobAlerts" checked />
+      Email me when new matching jobs are posted
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" id="marketing" />
+      Send me general municipality news and updates
+    </label>
+
+    <div class="actions">
+      <button type="button" class="btn-secondary" onclick="goStep(1)">◀ Back</button>
+      <button type="button" class="btn-primary" onclick="goStep(3)">NEXT ▶</button>
+    </div>
+  </div>
+
+<!-- ===== STEP 3 ===== -->
+<div class="form-card" data-step="3">
+  <h2>Documents &amp; Experience</h2>
+  <p class="sub">Upload your CV and certified supporting documents. Scanned copies are accepted.</p>
+
+  <h3>CV &amp; Cover Letter</h3>
+
+  <label for="cvFile">CV / Résumé * (PDF, DOC, DOCX)</label>
+  <input type="file" id="cvFile" accept=".pdf,.doc,.docx" />
+
+  <label for="coverLetterFile">Cover Letter (optional)</label>
+  <input type="file" id="coverLetterFile" accept=".pdf,.doc,.docx" />
+
+  <h3>Certified Documents</h3>
+  <p class="sub" style="font-size:12px;opacity:.75">
+    Upload a scan or photo of each certified document. You may skip any that don't apply.
+  </p>
+
+  <label for="idCopyFile">Certified ID Copy</label>
+  <input type="file" id="idCopyFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+
+  <label for="proofOfResidenceFile">Proof of Residence (Ward Councillor)</label>
+  <input type="file" id="proofOfResidenceFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+
+  <label for="grade12File">Grade 12 Certificate</label>
+  <input type="file" id="grade12File" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+
+  <label for="diplomaFile">Diploma / Qualification Certificate</label>
+  <input type="file" id="diplomaFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+
+  <label for="sapsFile">SAPS Clearance Certificate</label>
+  <input type="file" id="sapsFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+
+  <label for="medicalFile">Medical Fitness Report</label>
+  <input type="file" id="medicalFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+
+  <label for="driversLicenceFile">Driver's Licence (card scan)</label>
+  <input type="file" id="driversLicenceFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+
+  <label for="otherFile">Other Supporting Documents</label>
+  <input type="file" id="otherFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+
+  <h3>Education</h3>
+  <div id="educationList" class="list"></div>
+  <button type="button" class="btn-secondary" onclick="openEducationForm()">+ Add Education</button>
+
+  <h3>Work Experience</h3>
+  <div id="experienceList" class="list"></div>
+  <button type="button" class="btn-secondary" onclick="openExperienceForm()">+ Add Experience</button>
+
+  <div class="actions">
+    <button type="button" class="btn-secondary" onclick="goStep(2)">◀ Back</button>
+    <button type="button" id="submitBtn" class="btn-primary" onclick="submitProfile()">SUBMIT PROFILE ✔</button>
+  </div>
+  <div id="submitMsg" class="msg"></div>
+</div>
+
+</main>
+
+<!-- =========================================================
+     EDUCATION MODAL
+     ========================================================= -->
+<div id="eduModal" class="modal">
+  <div class="modal-content">
+    <h3>Add Education</h3>
+
+    <label for="eduDegree">Qualification / Degree *</label>
+    <input id="eduDegree" />
+
+    <label for="eduMajor">Major / Field of Study</label>
+    <input id="eduMajor" />
+
+    <label for="eduSchool">Institution</label>
+    <input id="eduSchool" />
+
+    <label for="eduLevel">NQF Level</label>
+    <select id="eduLevel">
+      <option value="">Select…</option>
+      <option>NQF 1</option><option>NQF 2</option><option>NQF 3</option>
+      <option>NQF 4</option><option>NQF 5</option><option>NQF 6</option>
+      <option>NQF 7</option><option>NQF 8</option><option>NQF 9</option>
+      <option>NQF 10</option>
+    </select>
+
+    <label>Start Date</label>
+    <div class="row">
+      <select id="eduStartMonth"></select>
+      <select id="eduStartYear"></select>
+    </div>
+
+    <label>End Date</label>
+    <div class="row">
+      <select id="eduEndMonth"></select>
+      <select id="eduEndYear"></select>
+    </div>
+
+    <label for="eduCountry">Country</label>
+    <input id="eduCountry" />
+
+    <label for="eduCity">City</label>
+    <input id="eduCity" />
+
+    <label for="eduGrade">Average Grade (%)</label>
+    <input id="eduGrade" />
+
+    <label for="eduYearAcquired">Year Acquired</label>
+    <input id="eduYearAcquired" />
+
+    <div class="actions">
+      <button type="button" class="btn-secondary" onclick="closeModal('eduModal')">Cancel</button>
+      <button type="button" class="btn-primary" onclick="saveEducation()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     EXPERIENCE MODAL
+     ========================================================= -->
+<div id="expModal" class="modal">
+  <div class="modal-content">
+    <h3>Add Work Experience</h3>
+
+    <label for="expEmployer">Employer Name *</label>
+    <input id="expEmployer" />
+
+    <label for="expTitle">Job Title</label>
+    <input id="expTitle" />
+
+    <label>Start Date</label>
+    <div class="row">
+      <select id="expStartMonth"></select>
+      <select id="expStartYear"></select>
+    </div>
+
+    <label>End Date</label>
+    <div class="row">
+      <select id="expEndMonth"></select>
+      <select id="expEndYear"></select>
+    </div>
+
+    <label class="checkbox">
+      <input type="checkbox" id="expCurrent" />
+      I currently work here
+    </label>
+
+    <label for="expCountry">Employer Country</label>
+    <input id="expCountry" />
+
+    <label for="expCity">Employer City</label>
+    <input id="expCity" />
+
+    <label for="expResp">Key Responsibilities</label>
+    <textarea id="expResp" rows="4"></textarea>
+
+    <div class="actions">
+      <button type="button" class="btn-secondary" onclick="closeModal('expModal')">Cancel</button>
+      <button type="button" class="btn-primary" onclick="saveExperience()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/signup.js" defer></script>
+</body>
+</html>

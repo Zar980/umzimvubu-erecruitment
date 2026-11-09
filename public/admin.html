@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Umzimvubu eRecruitment</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="site-header admin">
+  <div class="brand"><div class="logo"><img src="./images/logo.png" alt="ULM Logo"></div><div><h1>Admin Panel</h1></div></div>
+  <nav><a href="/">View Site</a><a href="#" onclick="logout();return false;">Logout</a></nav>
+</header>
+
+<main>
+  <section id="authPanel" class="form-card active" style="max-width:460px;margin:40px auto">
+
+    <div id="viewLogin">
+      <h2>Admin Login</h2>
+      <label>Username</label><input id="loginUser" value="admin" autocomplete="username" />
+      <label>Password</label><input id="loginPass" type="password" autocomplete="current-password" />
+      <button class="btn-primary" onclick="login()">Login</button>
+      <div id="loginMsg" class="msg"></div>
+      <p id="noPasswordNote" style="display:none;margin-top:14px">
+        No password set. <a href="#" onclick="showSetup();return false;">Click here to set password</a>
+      </p>
+      <p id="expiryNote" style="display:none;margin-top:10px;font-size:13px;opacity:.75"></p>
+      <p style="margin-top:10px;font-size:13px">
+        <a href="#" onclick="forgotPassword();return false;">Forgot password?</a>
+      </p>
+    </div>
+
+    <div id="viewSetup" style="display:none">
+      <h2>Set Password</h2>
+      <p style="font-size:13px;opacity:.75">
+        Minimum <span id="setupMinLen">8</span> characters. Must be changed every
+        <span id="setupValidDays">30</span> days. The email receives your reset PIN.
+      </p>
+      <label>Username</label><input id="setupUser" value="admin" autocomplete="username" />
+      <label>Email (for reset PINs)</label><input id="setupEmail" type="email" autocomplete="email" />
+      <label>New password</label><input id="setupPass" type="password" autocomplete="new-password" />
+      <label>Confirm password</label><input id="setupPass2" type="password" autocomplete="new-password" />
+      <button class="btn-primary" onclick="submitSetup()">Save password</button>
+      <div id="setupMsg" class="msg"></div>
+      <p style="margin-top:10px"><a href="#" onclick="showLogin();return false;">Back to login</a></p>
+    </div>
+
+    <div id="viewTotp" style="display:none">
+      <h2>Authenticator code</h2>
+      <p style="font-size:13px;opacity:.75">Open your authenticator app and enter the current 6-digit code.</p>
+      <label>6-digit code</label>
+      <input id="totpCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code" />
+      <button class="btn-primary" onclick="submitTotp()">Verify</button>
+      <div id="totpMsg" class="msg"></div>
+      <p style="margin-top:10px"><a href="#" onclick="showLogin();return false;">Back to login</a></p>
+    </div>
+
+    <div id="viewOtp" style="display:none">
+      <h2>Enter reset PIN</h2>
+      <p style="font-size:13px;opacity:.75">
+        A 6-digit PIN was sent to <strong id="otpEmail">your admin email</strong>.
+        It expires in <span id="otpTtl">10</span> minutes.
+      </p>
+      <label>PIN</label>
+      <input id="otpCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code" />
+      <button class="btn-primary" onclick="submitOtp()">Verify PIN</button>
+      <div id="otpMsg" class="msg"></div>
+      <p style="margin-top:10px;font-size:13px">
+        <a href="#" onclick="forgotPassword();return false;">Resend PIN</a> &nbsp;·&nbsp;
+        <a href="#" onclick="showLogin();return false;">Back to login</a>
+      </p>
+    </div>
+
+    <div id="viewReset" style="display:none">
+      <h2>Set new password</h2>
+      <p style="font-size:13px;opacity:.75">PIN verified. Choose a new password. 2FA is cleared on reset.</p>
+      <label>New password</label><input id="resetPass" type="password" autocomplete="new-password" />
+      <label>Confirm new password</label><input id="resetPass2" type="password" autocomplete="new-password" />
+      <button class="btn-primary" onclick="submitReset()">Save new password</button>
+      <div id="resetMsg" class="msg"></div>
+    </div>
+
+    <div id="viewChange" style="display:none">
+      <h2>New password required</h2>
+      <p style="font-size:13px;opacity:.75">
+        Your password is older than <span id="changeValidDays">30</span> days.
+      </p>
+      <label>Current password</label><input id="changeCurrent" type="password" autocomplete="current-password" />
+      <label>New password</label><input id="changePass" type="password" autocomplete="new-password" />
+      <label>Confirm new password</label><input id="changePass2" type="password" autocomplete="new-password" />
+      <button class="btn-primary" onclick="submitChange()">Update password</button>
+      <div id="changeMsg" class="msg"></div>
+      <p style="margin-top:10px"><a href="#" onclick="showLogin();return false;">Back to login</a></p>
+    </div>
+  </section>
+
+  <section id="dashboardPanel" style="display:none">
+
+    <div class="candidates-toolbar">
+      <h2>Candidates</h2>
+      <div class="toolbar-actions">
+        <span id="llmBadge" class="badge" style="margin-right:8px;display:none"></span>
+        <button type="button" id="btnExportCsv" class="btn-secondary">Export CSV</button>
+        <button type="button" id="btnDeleteSelected" class="btn-secondary btn-danger">Delete selected</button>
+      </div>
+    </div>
+    <div id="candidatesTable"></div>
+
+    <!-- CV Search -->
+    <h2 style="margin-top:40px">CV Search</h2>
+    <div class="form-card active">
+      <label for="atsQuery">Boolean query</label>
+      <input id="atsQuery" placeholder='"Traffic Diploma" AND ("Driving Licence" OR "Code B") NOT intern' />
+      <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+        <button type="button" class="btn-primary" onclick="runAtsSearch()">Search CVs</button>
+        <button type="button" class="btn-secondary" onclick="reindexCvs()">Re-parse all CVs</button>
+      </div>
+      <div id="atsMsg" class="msg"></div>
+      <div id="atsResults" style="margin-top:14px"></div>
+    </div>
+
+    <!-- Post a Job -->
+    <h2 style="margin-top:40px">Post a Job</h2>
+    <div class="form-card active">
+      <label>Title</label><input id="jobTitle" />
+      <label>Category</label><input id="jobCategory" />
+      <label>Description</label><textarea id="jobDesc" rows="3"></textarea>
+      <label>Requirements</label><textarea id="jobReq" rows="3"></textarea>
+
+      <label>Closing Date &amp; Time</label>
+      <div class="row">
+        <input id="jobClosing" type="date" />
+        <input id="jobClosingTime" type="time" step="60" placeholder="23:59" />
+      </div>
+      <small style="opacity:.7">Leave the time blank to close at end of day (23:59).</small>
+
+      <button class="btn-primary" onclick="createJob()" style="margin-top:14px">Create Job</button>
+    </div>
+
+    <h2 style="margin-top:40px">Open Jobs</h2>
+    <div id="jobsTable"></div>
+
+    <h2 style="margin-top:40px">Security</h2>
+    <div class="form-card active">
+      <p id="sessionInfo" style="font-size:13px;opacity:.75"></p>
+
+      <h3 style="margin-top:16px">Change password</h3>
+      <label>Current password</label><input id="dashCurrent" type="password" autocomplete="current-password" />
+      <label>New password</label><input id="dashPass" type="password" autocomplete="new-password" />
+      <label>Confirm new password</label><input id="dashPass2" type="password" autocomplete="new-password" />
+      <button class="btn-primary" onclick="submitDashboardChange()">Update password</button>
+      <div id="dashMsg" class="msg"></div>
+
+      <h3 style="margin-top:24px">Reset email</h3>
+      <label>Email</label><input id="dashEmail" type="email" />
+      <label>Password</label><input id="dashEmailPass" type="password" autocomplete="current-password" />
+      <button class="btn-primary" onclick="submitEmail()">Update email</button>
+      <div id="emailMsg" class="msg"></div>
+
+      <h3 style="margin-top:24px">Two-factor authentication</h3>
+      <p id="totpStatus" style="font-size:13px;opacity:.75"></p>
+      <div id="totpSetup" style="display:none">
+        <p style="font-size:13px">Add this secret to your authenticator app, then confirm a code.</p>
+        <p id="totpSecret" style="font-family:monospace;word-break:break-all;font-size:13px"></p>
+        <label>6-digit code</label><input id="totpConfirm" inputmode="numeric" maxlength="6" />
+        <button class="btn-primary" onclick="confirm2fa()">Enable 2FA</button>
+      </div>
+      <div id="totpDisable" style="display:none">
+        <label>Password</label><input id="totpDisablePass" type="password" />
+        <label>6-digit code</label><input id="totpDisableCode" inputmode="numeric" maxlength="6" />
+        <button class="btn-primary" onclick="disable2fa()">Disable 2FA</button>
+      </div>
+      <button class="btn-primary" id="totpStartBtn" style="display:none;margin-top:10px" onclick="start2fa()">Set up 2FA</button>
+      <div id="totpMsg" class="msg"></div>
+    </div>
+  </section>
+</main>
+
+<div id="masterListPanel" class="master-panel">
+  <div class="master-panel-inner">
+    <div class="master-panel-head">
+      <h3 id="masterListTitle">Master List</h3>
+      <button type="button" class="btn-secondary" onclick="closeMasterList()">Close</button>
+    </div>
+    <p id="masterListSummary" class="master-summary"></p>
+
+    <div class="master-columns">
+      <section>
+        <h4>Qualified Candidates</h4>
+        <div id="masterListQualified" class="master-list"></div>
+      </section>
+      <section>
+        <h4>Unqualified Candidates</h4>
+        <div id="masterListUnqualified" class="master-list"></div>
+      </section>
+    </div>
+
+    <div class="master-panel-foot">
+      <button type="button" id="masterListRebuild" class="btn-secondary"
+              onclick="rebuildMasterList()" disabled>
+        Rebuild (re-run screening)
+      </button>
+      <button type="button" id="masterListDownload" class="btn-primary"
+              onclick="downloadMasterListCsv()" disabled>
+        Download as Excel (CSV)
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="historyPanel" class="master-panel">
+  <div class="master-panel-inner">
+    <div class="master-panel-head">
+      <h3 id="historyTitle">Application History</h3>
+      <button type="button" class="btn-secondary" onclick="closeHistoryPanel()">Close</button>
+    </div>
+    <p id="historySummary" class="master-summary"></p>
+    <div id="historyList" class="master-list"></div>
+  </div>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>
