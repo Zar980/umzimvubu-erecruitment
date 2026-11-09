@@ -867,6 +867,21 @@ app.post('/api/admin/setup', (req, res) => {
   const password = String(req.body?.newPassword ?? '');
   const confirm = String(req.body?.confirmPassword ?? password);
 
+  // --- NEW SECURITY CHECK ---
+  const envAdminEmail = normaliseEmail(process.env.ADMIN_EMAIL);
+  if (!envAdminEmail) {
+    return res.status(500).json({ ok: false, error: 'System error: ADMIN_EMAIL is not configured in the server environment.' });
+  }
+  if (email !== envAdminEmail) {
+    audit(null, 'setup.unauthorized', `attempted email: ${email}`, req);
+    return res.status(403).json({ 
+      ok: false, 
+      code: 'UNAUTHORIZED_EMAIL', 
+      error: 'Access denied. Only the official system administrator email can claim this account.' 
+    });
+  }
+  // --------------------------
+
   if (!isValidEmail(email)) {
     return res.status(400).json({ ok: false, code: 'EMAIL', error: 'A valid email is required for PIN resets.' });
   }
@@ -1199,17 +1214,12 @@ app.post('/api/admin/2fa/disable', requireAdmin, (req, res) => {
    ADMIN — email on file
    ========================================================================== */
 app.post('/api/admin/email', requireAdmin, (req, res) => {
-  const email = normaliseEmail(req.body?.email);
-  const password = String(req.body?.password || '');
-
-  if (!isValidEmail(email)) return res.status(400).json({ ok: false, code: 'EMAIL', error: 'Enter a valid email.' });
-  if (!db.verifyAdminPassword(req.admin, password)) {
-    return res.status(401).json({ ok: false, code: 'BAD_CREDENTIALS', error: 'Password is incorrect.' });
-  }
-
-  db.setAdminEmail(req.admin.id, email);
-  audit(req.admin.id, 'email.changed', mailer.maskEmail(email), req);
-  res.json({ ok: true, email: mailer.maskEmail(email) });
+  // Lock this down completely so no one can hijack the reset email
+  return res.status(403).json({ 
+    ok: false, 
+    code: 'LOCKED', 
+    error: 'The admin email is locked to the system environment variables. Contact the developer to change it.' 
+  });
 });
 
 /* ==========================================================================

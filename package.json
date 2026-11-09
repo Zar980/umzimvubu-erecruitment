@@ -2,7 +2,7 @@
   "name": "umzimvubu-erecruitment",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js", 
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "jest --runInBand --detectOpenHandles"
@@ -12,7 +12,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "3": "^2.1.0", 
+    "3": "^2.1.0",
     "@google/genai": "^2.30.0",
     "adm-zip": "^0.6.1",
     "bcryptjs": "^3.0.3",
@@ -27,6 +27,7 @@
     "nodemailer": "^10.1.1",
     "openai": "^7.39.0",
     "pdf-parse": "^1.1.1",
+    "resend": "^6.37.0",
     "session-store": "^0.0.3",
     "sqlite": "^5.1.1",
     "sqlite3": "^6.0.1",
