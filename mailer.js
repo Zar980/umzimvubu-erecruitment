@@ -1,12 +1,11 @@
 'use strict';
 
 require('dotenv').config();
-const { Resend } = require('resend');
 const nodemailer = require('nodemailer');
 
-// Check if we have a Resend API Key (Preferred for Render)
-const hasResend = !!process.env.RESEND_API_KEY;
-const resend = hasResend ? new Resend(process.env.RESEND_API_KEY) : null;
+// --- 1. Brevo Setup (Primary for Production) ---
+const hasBrevo = !!process.env.BREVO_API_KEY;
+const brevoSender = process.env.BREVO_SENDER || 'robustnumber1@gmail.com'; 
 
 // Fallback to SMTP (Local development)
 const hasSmtpConfig = !!(process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD);
